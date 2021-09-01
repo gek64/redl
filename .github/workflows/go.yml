@@ -30,9 +30,8 @@ jobs:
     - run: git clone https://github.com/gek64/gek.git
     - run: curl -LOJ https://github.com/gek64/build-apps-scripts/raw/main/gobuilder.sh
     - run: ln -s ${{ github.workspace }}/gek ../gek
+    - run: bash gobuilder.sh --all
     - run: ls .. -R -las
-    - run: go mod graph
-    - run: go mod graph | awk '{print $1}' | awk '{print $0}'
     
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
@@ -59,3 +58,4 @@ jobs:
         artifacts: "bin/*"
         tag: 'latest'
         token: ${{ secrets.GITHUB_TOKEN }}
+    
