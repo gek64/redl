@@ -32,7 +32,8 @@ jobs:
     - run: ln -s ${{ github.workspace }}/gek ../gek
     - run: bash gobuilder.sh --os windows --arch amd64 
     - run: ls .. -R -las
-    - run: git push --delete origin latest
+    - run: go mod
+    - run: go mod graph | awk '{print $1}'
     
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
