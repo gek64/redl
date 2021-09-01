@@ -32,7 +32,7 @@ jobs:
     - run: ln -s ${{ github.workspace }}/gek ../gek
     - run: ls .. -R -las
     - run: go mod graph
-    - run: go mod graph | awk '{print $1}'
+    - run: go mod graph | awk '{print $1}' | awk '{print $1}'
     
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
