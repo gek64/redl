@@ -5,6 +5,7 @@ on:
     branches: [ main ]
     paths-ignore:
       - 'docs/**'
+      - '.github/**'
       - '**.md'
       - 'LICENSE'
   pull_request:
@@ -32,6 +33,7 @@ jobs:
     - run: ln -s ${{ github.workspace }}/gek ../gek
     - run: bash gobuilder.sh --all
     - run: ls .. -R -las
+    - run: git push --delete origin latest
     
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
