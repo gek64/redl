@@ -5,6 +5,7 @@ import (
 	"strings"
 )
 
+// GithubAPI Github 下载 API
 type GithubAPI struct {
 	TagName    string   `json:"tag_name"`
 	Assets     []Assets `json:"assets"`
@@ -18,6 +19,7 @@ type Assets struct {
 	BrowserDownloadURL string `json:"browser_download_url"`
 }
 
+// NewGithubAPI 新建 GithubAPI
 func NewGithubAPI(repo string) (githubAPI *GithubAPI, err error) {
 
 	githubAPI = new(GithubAPI)
@@ -37,6 +39,7 @@ func NewGithubAPI(repo string) (githubAPI *GithubAPI, err error) {
 	return githubAPI, nil
 }
 
+// SearchRelease 搜索 GithubAPI 中 Assets 中的名称,返回第一个匹配的下载链接
 func (api GithubAPI) SearchRelease(part string) (downloadUrl string) {
 	for _, asset := range api.Assets {
 		if strings.Contains(asset.Name, part) {
