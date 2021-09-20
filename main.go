@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
 	"os"
 )
 
@@ -26,7 +27,7 @@ func init() {
 	flag.Usage = func() {
 		var helpInfo = `
 Version:
-  1.00
+  1.01
 
 Usage:
   redl [Options]
@@ -68,20 +69,25 @@ Example:
 func showVersion() {
 	var versionInfo = `Changelog:
   1.00:
-    - First release`
+    - First release
+  1.01:
+    - Optimized error handling`
 	fmt.Println(versionInfo)
 }
 
 func main() {
 	api, err := NewGithubAPI(cliRepo)
 	if err != nil {
-		return
+		log.Fatalln(err)
 	}
 
 	dlUrl := api.SearchRelease(cliPart)
+	if dlUrl == "" {
+		log.Fatalf("Unable to find %s in release list", cliPart)
+	}
 
 	err = Downloader(dlUrl, cliOutput)
 	if err != nil {
-		return
+		log.Fatalln(err)
 	}
 }
