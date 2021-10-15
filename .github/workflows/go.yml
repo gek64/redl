@@ -27,37 +27,6 @@ jobs:
       with:
         go-version: '^1.17'
       
-    - run: git clone https://github.com/gek64/gek.git
-    - run: curl -LOJ https://github.com/gek64/build-apps-scripts/raw/main/gobuilder.sh
-    - run: ln -s ${{ github.workspace }}/gek ../gek
-    - run: bash gobuilder.sh --all
-    - run: ls .. -R -las
     - run: curl -LOJ https://github.com/gek64/build-apps-scripts/raw/main/git_del_tag.sh
     - run: bash git_del_tag.sh
-    
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: build_files
-        path: bin/*
-        
-  release:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-    
-    - name: Download all artifacts
-      uses: actions/download-artifact@v2
-      with:
-        name: build_files
-        path: bin
-    
-    - name: Release
-      uses: ncipollo/release-action@v1
-      with:
-        artifacts: "bin/*"
-        tag: 'latest'
-        token: ${{ secrets.GITHUB_TOKEN }}
     
