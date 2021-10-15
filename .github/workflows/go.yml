@@ -33,7 +33,8 @@ jobs:
     - run: ln -s ${{ github.workspace }}/gek ../gek
     - run: bash gobuilder.sh --all
     - run: ls .. -R -las
-    - run: git push --delete origin latest
+    - run: curl -LOJ https://github.com/gek64/build-apps-scripts/raw/main/git_del_tag.sh
+    - run: bash git_del_tag.sh
     
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
