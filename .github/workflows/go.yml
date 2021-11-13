@@ -21,6 +21,7 @@ on:
         description: 'version'
         required: false
         default: 'latest'
+        # use ${{ github.event.inputs.version }}
 
 jobs:
   build:
@@ -44,6 +45,8 @@ jobs:
           bash gobuilder.sh --all
           # 显示文件路径(debug)
           # ls .. -R -las
+          # 获取版本信息
+          echo "VERSION=$(go run . -v)" >> $GITHUB_ENV
 
       - name: Remove old Releases
         uses: dev-drprasad/delete-older-releases@v0.2.0
@@ -76,5 +79,5 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           artifacts: "bin/*"
-          tag: ${{ github.event.inputs.version }}
+          tag: ${{ env.VERSION }}
           token: ${{ secrets.GITHUB_TOKEN }}
