@@ -67,6 +67,11 @@ Example:
 }
 
 func showVersion() {
+	var versionInfo = `v1.01`
+	fmt.Println(versionInfo)
+}
+
+func showChangelog() {
 	var versionInfo = `Changelog:
   1.00:
     - First release
