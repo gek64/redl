@@ -3,6 +3,8 @@ package main
 import (
 	"flag"
 	"fmt"
+	"gek_downloader"
+	"gek_github"
 	"log"
 	"os"
 )
@@ -81,7 +83,7 @@ func showChangelog() {
 }
 
 func main() {
-	api, err := NewGithubAPI(cliRepo)
+	api, err := gek_github.NewGithubAPI(cliRepo)
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -91,7 +93,7 @@ func main() {
 		log.Fatalf("Unable to find %s in release list", cliPart)
 	}
 
-	err = Downloader(dlUrl, cliOutput)
+	err = gek_downloader.Downloader(dlUrl, cliOutput)
 	if err != nil {
 		log.Fatalln(err)
 	}

@@ -1,7 +1,13 @@
 module redl
 
-require gek_json v0.0.0
+require (
+	gek_downloader v0.0.0
+	gek_github v0.0.0
+)
 
-replace gek_json => ../gek/gek_json
-
-replace gek_file => ../gek/gek_file
+replace (
+	gek_downloader => ../gek/gek_downloader
+	gek_file => ../gek/gek_file
+	gek_github => ../gek/gek_github
+	gek_json => ../gek/gek_json
+)
