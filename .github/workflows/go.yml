@@ -46,7 +46,7 @@ jobs:
           # 编译所有支持的架构/系统对
           curl -Lo gobuilder https://github.com/gek64/build-apps-scripts/raw/main/gobuilder-linux-amd64
           chmod +x gobuilder
-          gobuilder -d bin -main
+          ./gobuilder -d bin -main
 
           # 显示文件路径(debug)
           # ls .. -R -las
