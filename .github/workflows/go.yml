@@ -44,7 +44,7 @@ jobs:
           mkdir -p bin
 
           # 编译所有支持的架构/系统对
-          curl -Lo gobuilder https://github.com/gek64/build-apps-scripts/raw/main/gobuilder-linux-amd64
+          curl -Lo gobuilder https://github.com/gek64/gobuilder/releases/latest/download/gobuilder-linux-amd64
           chmod +x gobuilder
           ./gobuilder -d bin -main
 
