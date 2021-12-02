@@ -56,7 +56,7 @@ jobs:
           # 显示文件路径(debug)
           # ls .. -R -las
 
-          # 获取sha256 checksum,并写入文件
+          # 获取sha256 checksum
           sha256sum bin/* > bin/SHA256SUMS.txt
 
           # 获取版本信息
