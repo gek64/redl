@@ -28,9 +28,6 @@ func init() {
 	// 重写显示用法函数
 	flag.Usage = func() {
 		var helpInfo = `
-Version:
-  1.01
-
 Usage:
   redl [Options]
 
@@ -69,7 +66,7 @@ Example:
 }
 
 func showVersion() {
-	var versionInfo = `v1.01`
+	var versionInfo = `v1.02`
 	fmt.Println(versionInfo)
 }
 
@@ -78,7 +75,9 @@ func showChangelog() {
   1.00:
     - First release
   1.01:
-    - Optimized error handling`
+    - Optimized error handling
+  1.02:
+    - Add external downloader(aria2 wget curl) support`
 	fmt.Println(versionInfo)
 }
 
@@ -93,8 +92,11 @@ func main() {
 		log.Fatalf("Unable to find %s in release list", cliPart)
 	}
 
-	err = gek_downloader.Downloader(dlUrl, cliOutput)
+	err = gek_downloader.ExternalDownloader(dlUrl, cliOutput)
 	if err != nil {
-		log.Fatalln(err)
+		err := gek_downloader.Downloader(dlUrl, cliOutput)
+		if err != nil {
+			log.Fatalln(err)
+		}
 	}
 }
