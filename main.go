@@ -39,10 +39,11 @@ Options:
   -v            : show version
 
 Example:
-  1) redl -r gek64/redl -p windows-amd64
-  2) redl -r gek64/redl -p windows-amd64 -o ./release-downloader-windows-amd64.exe
-  3) redl -h
-  4) redl -v`
+  1) redl -r "gek64/redl" -p "windows-amd64"
+  2) redl -r "gek64/redl" -p "windows" "amd64"
+  3) redl -r "gek64/redl" -p "windows-amd64" -o "./release-downloader-windows-amd64.exe"
+  4) redl -h
+  5) redl -v`
 		fmt.Println(helpInfo)
 	}
 
@@ -66,7 +67,7 @@ Example:
 }
 
 func showVersion() {
-	var versionInfo = `v1.02`
+	var versionInfo = `v1.03`
 	fmt.Println(versionInfo)
 }
 
@@ -77,7 +78,9 @@ func showChangelog() {
   1.01:
     - Optimized error handling
   1.02:
-    - Add external downloader(aria2 wget curl) support`
+    - Add aria2, wget and build-in downloader support
+  1.03:
+    - Add multi-parts support`
 	fmt.Println(versionInfo)
 }
 
@@ -87,9 +90,9 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	dlUrl := api.SearchRelease(cliPart)
-	if dlUrl == "" {
-		log.Fatalf("Unable to find %s in release list", cliPart)
+	dlUrl, err := api.SearchPartsInRelease(append(flag.Args(), cliPart))
+	if err != nil {
+		log.Fatalln(err)
 	}
 
 	err = gek_downloader.ExternalDownloader(dlUrl, cliOutput)

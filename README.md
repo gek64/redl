@@ -5,9 +5,6 @@
 
 ## Usage
 ```
-Version:
-  1.00
-
 Usage:
   redl [Options]
 
@@ -19,10 +16,11 @@ Options:
   -v            : show version
 
 Example:
-  1) redl -r gek64/redl -p windows-amd64
-  2) redl -r gek64/redl -p windows-amd64 -o ./release-downloader-windows-amd64.exe
-  3) redl -h
-  4) redl -v
+  1) redl -r "gek64/redl" -p "windows-amd64"
+  2) redl -r "gek64/redl" -p "windows" "amd64"
+  3) redl -r "gek64/redl" -p "windows-amd64" -o "./release-downloader-windows-amd64.exe"
+  4) redl -h
+  5) redl -v
 ```
 
 ## Build
