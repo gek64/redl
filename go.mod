@@ -1,6 +1,6 @@
 module redl
 
-go 1.16
+go 1.17
 
 require (
 	gek_downloader v0.0.0
@@ -13,4 +13,5 @@ replace (
 	gek_file => ../gek/gek_file
 	gek_github => ../gek/gek_github
 	gek_json => ../gek/gek_json
+	gek_math => ../gek/gek_math
 )

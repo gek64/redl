@@ -67,7 +67,7 @@ Example:
 }
 
 func showVersion() {
-	var versionInfo = `v1.03`
+	var versionInfo = `v1.04`
 	fmt.Println(versionInfo)
 }
 
@@ -80,7 +80,9 @@ func showChangelog() {
   1.02:
     - Add aria2, wget and build-in downloader support
   1.03:
-    - Add multi-parts support`
+    - Add multi-parts support
+  1.04:
+    - Rewrite download function`
 	fmt.Println(versionInfo)
 }
 
@@ -95,11 +97,8 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	err = gek_downloader.ExternalDownloader(dlUrl, cliOutput)
+	err = gek_downloader.Downloader(dlUrl, "", cliOutput)
 	if err != nil {
-		err := gek_downloader.Downloader(dlUrl, cliOutput)
-		if err != nil {
-			log.Fatalln(err)
-		}
+		log.Fatalln(err)
 	}
 }
