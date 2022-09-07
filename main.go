@@ -27,21 +27,24 @@ func init() {
 
 	// 重写显示用法函数
 	flag.Usage = func() {
-		var helpInfo = `
-Usage:
-  redl [Options]
+		var helpInfo = `Usage:
+  redl -r rope [Options] -p [part1 part2 par3...]
 
-Options:
+Args:
   -r  <repo>    : set repo
   -p  <part>    : set the search part of the file name to be downloaded
+
+Options:
   -o  <output>  : set output file
+
+Other:
   -h            : show help
   -v            : show version
 
 Example:
   1) redl -r "gek64/redl" -p "windows-amd64"
   2) redl -r "gek64/redl" -p "windows" "amd64"
-  3) redl -r "gek64/redl" -p "windows-amd64" -o "./release-downloader-windows-amd64.exe"
+  3) redl -r "gek64/redl" -o "./release-downloader-windows-amd64.exe" -p "windows-amd64" ".exe"
   4) redl -h
   5) redl -v`
 		fmt.Println(helpInfo)
@@ -67,7 +70,7 @@ Example:
 }
 
 func showVersion() {
-	var versionInfo = `v1.04`
+	var versionInfo = `v1.05`
 	fmt.Println(versionInfo)
 }
 
@@ -82,7 +85,9 @@ func showChangelog() {
   1.03:
     - Add multi-parts support
   1.04:
-    - Rewrite download function`
+    - Rewrite download function
+  1.05:
+    - Change help, args like -p "windows" ".exe" -o "./bin.exe" is not supported`
 	fmt.Println(versionInfo)
 }
 
