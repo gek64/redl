@@ -4,20 +4,24 @@
 
 ## Usage
 ```
-Usage:
-  redl [Options]
-
-Options:
+Usage:                                                                 
+  redl -r rope [Options] -p [part1 part2 par3...]                      
+                                                                       
+Args:                                                                  
   -r  <repo>    : set repo
   -p  <part>    : set the search part of the file name to be downloaded
+
+Options:                                                               
   -o  <output>  : set output file
+                                                                       
+Other: 
   -h            : show help
   -v            : show version
 
 Example:
   1) redl -r "gek64/redl" -p "windows-amd64"
   2) redl -r "gek64/redl" -p "windows" "amd64"
-  3) redl -r "gek64/redl" -p "windows-amd64" -o "./release-downloader-windows-amd64.exe"
+  3) redl -r "gek64/redl" -o "./release-downloader-windows-amd64.exe" -p "windows-amd64" ".exe"
   4) redl -h
   5) redl -v
 ```
