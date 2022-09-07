@@ -87,7 +87,7 @@ func showChangelog() {
   1.04:
     - Rewrite download function
   1.05:
-    - Change help, args like -p "windows" ".exe" -o "./bin.exe" is not supported`
+    - Change the description of help, parameters such as -p "windows" ".exe" -o "./bin.exe" are not supported`
 	fmt.Println(versionInfo)
 }
 
