@@ -29,7 +29,6 @@ Example:
 ## Compile
 ### How to compile if prebuilt binaries are not found
 ```sh
-git clone https://github.com/gek64/gek.git
 git clone https://github.com/gek64/redl.git
 cd redl
 go build -v -trimpath -ldflags "-s -w"
