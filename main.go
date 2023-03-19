@@ -4,7 +4,6 @@ import (
 	"flag"
 	"fmt"
 	"github.com/gek64/gek/gDownloader"
-	"github.com/gek64/gek/gGithub"
 	"log"
 	"os"
 )
@@ -12,6 +11,7 @@ import (
 var (
 	cliRepo    string
 	cliPart    string
+	cliRss     string
 	cliOutput  string
 	cliHelp    bool
 	cliVersion bool
@@ -20,6 +20,7 @@ var (
 func init() {
 	flag.StringVar(&cliRepo, "r", "", "set repo")
 	flag.StringVar(&cliPart, "p", "", "set the search part of the file name to be downloaded")
+	flag.StringVar(&cliRss, "rss", "", "set rss link")
 	flag.StringVar(&cliOutput, "o", "", "set output file")
 	flag.BoolVar(&cliHelp, "h", false, "show help")
 	flag.BoolVar(&cliVersion, "v", false, "show version")
@@ -28,25 +29,27 @@ func init() {
 	// 重写显示用法函数
 	flag.Usage = func() {
 		var helpInfo = `Usage:
-  redl -r rope [Options] -p [part1 part2 par3...]
+  redl {-r rope | -rss rss_link} [Options] -p [part1, part2, par3, ...]
 
 Args:
-  -r  <repo>    : set repo
-  -p  <part>    : set the search part of the file name to be downloaded
+  -r   <repo>    : set repo
+  -p   <part>    : set the search part of the file name to be downloaded
+  -rss <rss>     : set rss link
 
 Options:
-  -o  <output>  : set output file
+  -o   <output>  : set output file
 
 Other:
-  -h            : show help
-  -v            : show version
+  -h             : show help
+  -v             : show version
 
 Example:
   1) redl -r "gek64/redl" -p "windows-amd64"
   2) redl -r "gek64/redl" -p "windows" "amd64"
   3) redl -r "gek64/redl" -o "./release-downloader-windows-amd64.exe" -p "windows-amd64" ".exe"
-  4) redl -h
-  5) redl -v`
+  4) redl -rss "https://sourceforge.net/projects/mpv-player-windows/rss?path=/64bit" -p "x86_64" ".7z"
+  5) redl -h
+  6) redl -v`
 		fmt.Println(helpInfo)
 	}
 
@@ -62,15 +65,21 @@ Example:
 		os.Exit(0)
 	}
 
-	// 未传递repo和part参数则退出
-	if cliRepo == "" || cliPart == "" {
-		fmt.Println("Missing Repo or Part")
+	// 未传递repo或rss参数和part参数则退出
+	if (cliRepo == "" && cliRss == "") || cliPart == "" {
+		fmt.Println("Missing Repo or Rss or Part")
+		os.Exit(0)
+	}
+
+	// 同时传递repo和rss参数,则退出
+	if cliRepo != "" && cliRss != "" {
+		fmt.Println("Rope and Rss methods can only choose one")
 		os.Exit(0)
 	}
 }
 
 func showVersion() {
-	var versionInfo = `v1.05`
+	var versionInfo = `v1.06`
 	fmt.Println(versionInfo)
 }
 
@@ -87,23 +96,34 @@ func showChangelog() {
   1.04:
     - Rewrite download function
   1.05:
-    - Change the description of help, parameters such as -p "windows" ".exe" -o "./bin.exe" are not supported`
+    - Change the description of help, parameters such as -p "windows" ".exe" -o "./bin.exe" are not supported
+  1.10:
+    - Add SourceForge rss support`
 	fmt.Println(versionInfo)
 }
 
 func main() {
-	api, err := gGithub.NewGithubAPI(cliRepo)
-	if err != nil {
-		log.Fatalln(err)
+	var downloadLink string
+	var err error
+
+	// 获取下载链接
+	if cliRepo != "" {
+		downloadLink, err = getGithubDownloadLink(cliRepo, append(flag.Args(), cliPart))
+		if err != nil {
+			log.Fatalln(err)
+		}
+	} else if cliRss != "" {
+		downloadLink, err = getSourceForgeDownloadLink(cliRss, append(flag.Args(), cliPart))
+		if err != nil {
+			log.Fatalln(err)
+		}
 	}
 
-	dlUrl, err := api.SearchPartsInRelease(append(flag.Args(), cliPart))
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-	err = gDownloader.Downloader(dlUrl, "", cliOutput)
-	if err != nil {
-		log.Fatalln(err)
+	// 下载
+	if downloadLink != "" {
+		err = gDownloader.Downloader(downloadLink, "", cliOutput)
+		if err != nil {
+			log.Fatalln(err)
+		}
 	}
 }

@@ -1,29 +1,31 @@
 # Release Downloader
 
-- Support github now, support more in the future
+- Support GitHub(rope mode) and Sourceforge(rss mode)
 
 ## Usage
 ```
 Usage:                                                                 
-  redl -r rope [Options] -p [part1 part2 par3...]                      
-                                                                       
-Args:                                                                  
-  -r  <repo>    : set repo
-  -p  <part>    : set the search part of the file name to be downloaded
+  redl {-r rope | -rss rss_link} [Options] -p [part1, part2, par3, ...]
 
-Options:                                                               
-  -o  <output>  : set output file
-                                                                       
-Other: 
-  -h            : show help
-  -v            : show version
+Args:
+  -r   <repo>    : set repo
+  -p   <part>    : set the search part of the file name to be downloaded
+  -rss <rss>     : set rss link
+
+Options:
+  -o   <output>  : set output file
+
+Other:
+  -h             : show help
+  -v             : show version
 
 Example:
   1) redl -r "gek64/redl" -p "windows-amd64"
   2) redl -r "gek64/redl" -p "windows" "amd64"
   3) redl -r "gek64/redl" -o "./release-downloader-windows-amd64.exe" -p "windows-amd64" ".exe"
-  4) redl -h
-  5) redl -v
+  4) redl -rss "https://sourceforge.net/projects/mpv-player-windows/rss?path=/64bit" -p "x86_64" ".7z"
+  5) redl -h
+  6) redl -v
 ```
 
 ## Compile
