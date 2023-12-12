@@ -10,8 +10,8 @@ import (
 )
 
 func main() {
-	var github_repository string
-	var sourceforge_rss string
+	var github_release string
+	var sourceforge_release string
 	var included_parts cli.StringSlice
 	var excluded_parts cli.StringSlice
 	var output string
@@ -20,14 +20,14 @@ func main() {
 		&cli.StringFlag{
 			Name:        "github_repository",
 			Aliases:     []string{"gr"},
-			Usage:       "set github repository",
-			Destination: &github_repository,
+			Usage:       "set github release url",
+			Destination: &github_release,
 		},
 		&cli.StringFlag{
-			Name:        "sourceforge_rss",
+			Name:        "sourceforge_release",
 			Aliases:     []string{"sr"},
-			Usage:       "set sourceforge rss",
-			Destination: &sourceforge_rss,
+			Usage:       "set sourceforge release url",
+			Destination: &sourceforge_release,
 		},
 		&cli.StringSliceFlag{
 			Name:        "included_parts",
@@ -63,13 +63,13 @@ func main() {
 			var err error
 
 			// 获取下载链接
-			if github_repository != "" {
-				downloadLink, err = internal.GetGithubDownloadLink(github_repository, included_parts.Value(), excluded_parts.Value())
+			if github_release != "" {
+				downloadLink, err = internal.GetGithubDownloadLink(github_release, included_parts.Value(), excluded_parts.Value())
 				if err != nil {
 					log.Fatalln(err)
 				}
-			} else if sourceforge_rss != "" {
-				downloadLink, err = internal.GetSourceForgeDownloadLink(sourceforge_rss, included_parts.Value(), excluded_parts.Value())
+			} else if sourceforge_release != "" {
+				downloadLink, err = internal.GetSourceForgeDownloadLink(sourceforge_release, included_parts.Value(), excluded_parts.Value())
 				if err != nil {
 					log.Fatalln(err)
 				}

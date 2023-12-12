@@ -6,22 +6,22 @@ import (
 	"github.com/gek64/gek/gSourceForge"
 )
 
-func GetSourceForgeDownloadLink(rssUrl string, includes []string, excludes []string) (downloadLink string, err error) {
-	api, err := gSourceForge.NewAPI(rssUrl)
+func GetSourceForgeDownloadLink(releaseURL string, includes []string, excludes []string) (downloadLink string, err error) {
+	r, err := gSourceForge.NewRelease(releaseURL)
 	if err != nil {
 		return "", err
 	}
 
-	release := api.SearchRelease(includes, excludes)
+	release := r.SearchRelease(includes, excludes)
 
 	if len(release) <= 0 {
-		return "", fmt.Errorf("can not find the release\n")
+		return "", fmt.Errorf("can not find the release")
 	}
 	return release[0].Link, nil
 }
 
 func GetGithubDownloadLink(repo string, includes []string, excludes []string) (downloadLink string, err error) {
-	api, err := gGithub.NewAPI(repo)
+	api, err := gGithub.NewReleaseLatest(repo)
 	if err != nil {
 		return "", err
 	}
@@ -29,7 +29,7 @@ func GetGithubDownloadLink(repo string, includes []string, excludes []string) (d
 	release := api.SearchRelease(includes, excludes)
 
 	if len(release) <= 0 {
-		return "", fmt.Errorf("can not find the release\n")
+		return "", fmt.Errorf("can not find the release")
 	}
 	return release[0].BrowserDownloadURL, nil
 }
