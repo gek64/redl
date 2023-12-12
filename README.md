@@ -3,6 +3,7 @@
 - Support GitHub(rope mode) and Sourceforge(rss mode)
 
 ## Usage
+
 ```
 Usage:                                                                 
   redl {-r rope | -rss rss_link} [Options] -p [part1, part2, par3, ...]
@@ -29,7 +30,9 @@ Example:
 ```
 
 ## Compile
+
 ### How to compile if prebuilt binaries are not found
+
 ```sh
 git clone https://github.com/gek64/redl.git
 cd redl
@@ -37,9 +40,13 @@ go build -v -trimpath -ldflags "-s -w"
 ```
 
 ## QA
+
 ### Q: Windows Security detect `.exe` as `Trojan:Win32/Wacatac.B!ml`
-A: This application does not contain any malware, backdoors, and advertisements, all released files are build by GitHub actions. For more information, see https://go.dev/doc/faq#virus
+
+A: This application does not contain any malware, backdoors, and advertisements, all released files are build by GitHub
+actions. For more information, see https://go.dev/doc/faq#virus
 
 ## License
+
 - **GPL-3.0 License**
 - See `LICENSE` for details
