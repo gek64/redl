@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/gek64/gek/gDownloader"
+	"github.com/gek64/gek/gToolbox"
 	"github.com/urfave/cli/v2"
 	"log"
 	"os"
@@ -58,28 +59,35 @@ func main() {
 		Usage:   "Release Download Tool",
 		Version: "v2.00",
 		Flags:   flags,
-		Action: func(ctx *cli.Context) error {
+		Action: func(ctx *cli.Context) (err error) {
 			var downloadLink string
-			var err error
 
 			// 获取下载链接
 			if github_release != "" {
 				downloadLink, err = internal.GetGithubDownloadLink(github_release, included_parts.Value(), excluded_parts.Value())
 				if err != nil {
-					log.Fatalln(err)
+					return err
 				}
 			} else if sourceforge_release != "" {
 				downloadLink, err = internal.GetSourceForgeDownloadLink(sourceforge_release, included_parts.Value(), excluded_parts.Value())
 				if err != nil {
-					log.Fatalln(err)
+					return err
 				}
 			}
 
 			// 下载
 			if downloadLink != "" {
-				err = gDownloader.Downloader(downloadLink, "", output)
+				err = gToolbox.CheckToolbox([]string{"curl"})
 				if err != nil {
-					log.Fatalln(err)
+					err := gDownloader.Download(downloadLink, output, "")
+					if err != nil {
+						return err
+					}
+				} else {
+					err := gDownloader.DownloadWithCurl(downloadLink, output, "")
+					if err != nil {
+						return err
+					}
 				}
 			}
 			return nil
