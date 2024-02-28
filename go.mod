@@ -3,8 +3,8 @@ module redl
 go 1.21.4
 
 require (
-	github.com/gek64/gek v1.1.2-0.20231222091541-e37b3f00c2a9
-	github.com/urfave/cli/v2 v2.26.0
+	github.com/gek64/gek v1.1.2-0.20240122081904-9f44691c0810
+	github.com/urfave/cli/v2 v2.27.1
 )
 
 require (

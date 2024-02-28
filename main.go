@@ -11,24 +11,31 @@ import (
 )
 
 func main() {
-	var github_release string
-	var sourceforge_release string
+	var github string
+	var gitlab string
+	var sourceforge string
 	var included_parts cli.StringSlice
 	var excluded_parts cli.StringSlice
 	var output string
 
 	flags := []cli.Flag{
 		&cli.StringFlag{
-			Name:        "github_repository",
-			Aliases:     []string{"gr"},
-			Usage:       "set github release url",
-			Destination: &github_release,
+			Name:        "github",
+			Aliases:     []string{"gh"},
+			Usage:       "set github repo url",
+			Destination: &github,
 		},
 		&cli.StringFlag{
-			Name:        "sourceforge_release",
-			Aliases:     []string{"sr"},
-			Usage:       "set sourceforge release url",
-			Destination: &sourceforge_release,
+			Name:        "gitlab",
+			Aliases:     []string{"gl"},
+			Usage:       "set gitlab repo url",
+			Destination: &gitlab,
+		},
+		&cli.StringFlag{
+			Name:        "sourceforge",
+			Aliases:     []string{"sf"},
+			Usage:       "set sourceforge repo url",
+			Destination: &sourceforge,
 		},
 		&cli.StringSliceFlag{
 			Name:        "included_parts",
@@ -63,13 +70,15 @@ func main() {
 			var downloadLink string
 
 			// 获取下载链接
-			if github_release != "" {
-				downloadLink, err = internal.GetGithubDownloadLink(github_release, included_parts.Value(), excluded_parts.Value())
+			if github != "" {
+				downloadLink, err = internal.GetGithubDownloadLink(github, included_parts.Value(), excluded_parts.Value())
 				if err != nil {
 					return err
 				}
-			} else if sourceforge_release != "" {
-				downloadLink, err = internal.GetSourceForgeDownloadLink(sourceforge_release, included_parts.Value(), excluded_parts.Value())
+			} else if gitlab != "" {
+				fmt.Println("download release from gitlab is under development")
+			} else if sourceforge != "" {
+				downloadLink, err = internal.GetSourceForgeDownloadLink(sourceforge, included_parts.Value(), excluded_parts.Value())
 				if err != nil {
 					return err
 				}
