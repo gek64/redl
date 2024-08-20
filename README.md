@@ -31,6 +31,7 @@ chmod +x /usr/local/bin/redl
 ```sh
 git clone https://github.com/gek64/redl.git
 cd redl
+export CGO_ENABLED=0
 go build -v -trimpath -ldflags "-s -w"
 ```
 
