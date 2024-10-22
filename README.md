@@ -1,8 +1,9 @@
 # Release Downloader
 
-- Download release file with a specified name from GitHub, Gitlab, and Sourceforge
-- Automatically select the latest version or select by tag name
+- Download release file with or without specified names from GitHub, Gitlab and Sourceforge
+- Automatically select the latest version or manually select by tag name
 - Get the release file download link and use it with other download tools, such as curl, wget, aria2, etc.
+- Have a built-in file downloader to download file if no other file downloader installed
 
 ## Usage
 
@@ -39,10 +40,10 @@ redl -sf "https://sourceforge.net/projects/mpv-player-windows/rss?path=/64bit" -
 # output download link to stdout without download file
 redl -gl "36189" -p ".asc" -nd
 
-# downlaod use other download tool(aria2 curl wget etc)
-aria2c "$(redl -gl "36189" -p ".asc" -nd)"
-curl -LOJ "$(redl -gl "36189" -p ".asc" -nd)"
-wget --content-disposition "$(redl -gl "36189" -p ".asc" -nd)"
+# download use other download tool(aria2 curl wget etc)
+aria2c "$(redl -gl '36189' -p '.asc' -nd)"
+curl -LOJ "$(redl -gl '36189' -p '.asc' -nd)"
+wget --content-disposition "$(redl -gl '36189' -p '.asc' -nd)"
 ```
 
 ## Install
