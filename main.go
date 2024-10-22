@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"github.com/gek64/gek/gDownloader"
 	"github.com/gek64/gek/gToolbox"
@@ -14,8 +15,10 @@ func main() {
 	var github string
 	var gitlab string
 	var sourceforge string
+	var tagName string
 	var included_parts cli.StringSlice
 	var excluded_parts cli.StringSlice
+	var no_download bool
 	var output string
 
 	flags := []cli.Flag{
@@ -37,6 +40,12 @@ func main() {
 			Usage:       "set sourceforge repo url",
 			Destination: &sourceforge,
 		},
+		&cli.StringFlag{
+			Name:        "tag",
+			Aliases:     []string{"t"},
+			Usage:       "set tag name",
+			Destination: &tagName,
+		},
 		&cli.StringSliceFlag{
 			Name:        "included_parts",
 			Aliases:     []string{"p"},
@@ -48,6 +57,12 @@ func main() {
 			Aliases:     []string{"ep"},
 			Usage:       "set release file name excluded parts",
 			Destination: &excluded_parts,
+		},
+		&cli.BoolFlag{
+			Name:        "no_download",
+			Aliases:     []string{"nd"},
+			Usage:       "output the download link without starting to download the file",
+			Destination: &no_download,
 		},
 		&cli.StringFlag{
 			Name:        "output",
@@ -64,29 +79,76 @@ func main() {
 
 	app := &cli.App{
 		Usage:   "Release Download Tool",
-		Version: "v2.00",
+		Version: "v2.01",
 		Flags:   flags,
 		Action: func(ctx *cli.Context) (err error) {
 			var downloadLink string
 
-			// 获取下载链接
+			// 获取下载地址
 			if github != "" {
-				downloadLink, err = internal.GetGithubDownloadLink(github, included_parts.Value(), excluded_parts.Value())
+				var a *internal.GithubAPI
+				if tagName != "" {
+					a, err = internal.GetGithubApiByTagName(github, tagName)
+					if err != nil {
+						return err
+					}
+				} else {
+					a, err = internal.GetGithubApiLatest(github)
+					if err != nil {
+						return err
+					}
+				}
+
+				downloadLink, err = a.GetDownloadLink(included_parts.Value(), excluded_parts.Value())
 				if err != nil {
 					return err
 				}
-			} else if gitlab != "" {
-				fmt.Println("download release from gitlab is under development")
-			} else if sourceforge != "" {
-				downloadLink, err = internal.GetSourceForgeDownloadLink(sourceforge, included_parts.Value(), excluded_parts.Value())
+			}
+			if gitlab != "" {
+				var a *internal.GitlabAPI
+				if tagName != "" {
+					a, err = internal.GetGitlabApiByTagName(gitlab, tagName)
+					if err != nil {
+						return err
+					}
+				} else {
+					a, err = internal.GetGitlabApiLatest(gitlab)
+					if err != nil {
+						return err
+					}
+				}
+
+				downloadLink, err = a.GetDownloadLink(included_parts.Value(), excluded_parts.Value())
+				if err != nil {
+					return err
+				}
+			}
+			if sourceforge != "" {
+				var a *internal.SourceForgeAPI
+				if tagName != "" {
+					return errors.New("sourceforge does not support searching by tag name")
+				} else {
+					a, err = internal.GetSourceForgeByRss(sourceforge)
+					if err != nil {
+						return err
+					}
+				}
+
+				downloadLink, err = a.GetDownloadLink(included_parts.Value(), excluded_parts.Value())
 				if err != nil {
 					return err
 				}
 			}
 
-			// 下载
+			// 不进行下载文件的情况
+			if no_download {
+				fmt.Print(downloadLink)
+				return nil
+			}
+
+			// 进行下载文件的情况
 			if downloadLink != "" {
-				err = gToolbox.CheckToolbox([]string{"curl"})
+				_, err = gToolbox.CheckToolbox([]string{"curl"})
 				if err != nil {
 					err := gDownloader.Download(downloadLink, output, "")
 					if err != nil {

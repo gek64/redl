@@ -1,15 +1,48 @@
 # Release Downloader
 
-- Download Release from GitHub and Sourceforge
+- Download release file with a specified name from GitHub, Gitlab, and Sourceforge
+- Automatically select the latest version or select by tag name
+- Get the release file download link and use it with other download tools, such as curl, wget, aria2, etc.
 
 ## Usage
 
-```
-# download MPV windows from sourceforge
-redl -sf "https://sourceforge.net/projects/mpv-player-windows/rss?path=/64bit" -p "x86_64" -p ".7z"
+### Github
 
-# download OBS windows from github
-redl -gh "obsproject/obs-studio" -p "OBS-Studio" -p ".zip" -ep "pdbs"
+```sh
+# download latest release
+redl -gh "obsproject/obs-studio" -p "OBS-Studio" -p ".zip" -ep "PDBs.zip"
+
+# download release by tag
+redl -gh "obsproject/obs-studio" -t "30.2.2" -p "OBS-Studio" -p ".zip" -ep "PDBs.zip"
+```
+
+### Gitlab
+
+```sh
+# download latest release
+redl -gl "36189" -p ".apk" -ep ".asc"
+
+# download release by tag
+redl -gl "36189" -t "1.18.0" -p ".apk" -ep ".asc"
+```
+
+### SourceForge
+
+```sh
+# download release by rss url
+redl -sf "https://sourceforge.net/projects/mpv-player-windows/rss?path=/64bit" -p "x86_64" -p ".7z"
+```
+
+### Use with other download tools
+
+```sh
+# output download link to stdout without download file
+redl -gl "36189" -p ".asc" -nd
+
+# downlaod use other download tool(aria2 curl wget etc)
+aria2c "$(redl -gl "36189" -p ".asc" -nd)"
+curl -LOJ "$(redl -gl "36189" -p ".asc" -nd)"
+wget --content-disposition "$(redl -gl "36189" -p ".asc" -nd)"
 ```
 
 ## Install
