@@ -25,19 +25,19 @@ func main() {
 		&cli.StringFlag{
 			Name:        "github",
 			Aliases:     []string{"gh"},
-			Usage:       "set github repo url",
+			Usage:       "set github repo (example: gek64/redl)",
 			Destination: &github,
 		},
 		&cli.StringFlag{
 			Name:        "gitlab",
 			Aliases:     []string{"gl"},
-			Usage:       "set gitlab repo url",
+			Usage:       "set gitlab project id (example: 36189 or fdroid%2ffdroidclient)",
 			Destination: &gitlab,
 		},
 		&cli.StringFlag{
 			Name:        "sourceforge",
 			Aliases:     []string{"sf"},
-			Usage:       "set sourceforge repo url",
+			Usage:       "set sourceforge rss url (example: https://sourceforge.net/projects/mpv-player-windows/rss?path=/64bit)",
 			Destination: &sourceforge,
 		},
 		&cli.StringFlag{
