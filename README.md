@@ -44,6 +44,9 @@ redl -gl "36189" -p ".asc" -nd
 aria2c "$(redl -gl '36189' -p '.asc' -nd)"
 curl -LOJ "$(redl -gl '36189' -p '.asc' -nd)"
 wget --content-disposition "$(redl -gl '36189' -p '.asc' -nd)"
+
+# use with other download tools in Windows bat file
+for /f "tokens=*" %%i in ('redl -gl 36189 -p .asc -nd') do (aria2c -x 4 %%i)
 ```
 
 ## Install
