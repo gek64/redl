@@ -2,7 +2,8 @@ package internal
 
 import (
 	"fmt"
-	"github.com/gek64/gek/gRelease/gitlab"
+
+	"github.com/unix755/xtools/xRelease/gitlab"
 )
 
 type GitlabAPI struct {

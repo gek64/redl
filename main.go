@@ -1,14 +1,16 @@
 package main
 
 import (
+	"context"
 	"errors"
 	"fmt"
-	"github.com/gek64/gek/gDownloader"
-	"github.com/gek64/gek/gToolbox"
-	"github.com/urfave/cli/v2"
 	"log"
 	"os"
 	"redl/internal"
+
+	"github.com/unix755/xtools/xDownloader"
+	"github.com/unix755/xtools/xToolbox"
+	"github.com/urfave/cli/v3"
 )
 
 func main() {
@@ -16,16 +18,16 @@ func main() {
 	var gitlab string
 	var sourceforge string
 	var tagName string
-	var included_parts cli.StringSlice
-	var excluded_parts cli.StringSlice
-	var no_download bool
+	var includedParts []string
+	var excludedParts []string
+	var noDownload bool
 	var output string
 
 	flags := []cli.Flag{
 		&cli.StringFlag{
 			Name:        "github",
 			Aliases:     []string{"gh"},
-			Usage:       "set github repo (example: gek64/redl)",
+			Usage:       "set github repo (example: unix755/redl)",
 			Destination: &github,
 		},
 		&cli.StringFlag{
@@ -50,19 +52,19 @@ func main() {
 			Name:        "included_parts",
 			Aliases:     []string{"p"},
 			Usage:       "set release file name included parts",
-			Destination: &included_parts,
+			Destination: &includedParts,
 		},
 		&cli.StringSliceFlag{
 			Name:        "excluded_parts",
 			Aliases:     []string{"ep"},
 			Usage:       "set release file name excluded parts",
-			Destination: &excluded_parts,
+			Destination: &excludedParts,
 		},
 		&cli.BoolFlag{
 			Name:        "no_download",
 			Aliases:     []string{"nd"},
 			Usage:       "output the download link without starting to download the file",
-			Destination: &no_download,
+			Destination: &noDownload,
 		},
 		&cli.StringFlag{
 			Name:        "output",
@@ -73,15 +75,15 @@ func main() {
 	}
 
 	// 打印版本函数
-	cli.VersionPrinter = func(cCtx *cli.Context) {
-		fmt.Printf("%s", cCtx.App.Version)
+	cli.VersionPrinter = func(cmd *cli.Command) {
+		fmt.Printf("%s\n", cmd.Root().Version)
 	}
 
-	app := &cli.App{
+	cmd := &cli.Command{
 		Usage:   "Release Download Tool",
-		Version: "v2.01",
+		Version: "v2.10",
 		Flags:   flags,
-		Action: func(ctx *cli.Context) (err error) {
+		Action: func(ctx context.Context, cmd *cli.Command) (err error) {
 			var downloadLink string
 
 			// 获取下载地址
@@ -99,7 +101,7 @@ func main() {
 					}
 				}
 
-				downloadLink, err = a.GetDownloadLink(included_parts.Value(), excluded_parts.Value())
+				downloadLink, err = a.GetDownloadLink(includedParts, excludedParts)
 				if err != nil {
 					return err
 				}
@@ -118,7 +120,7 @@ func main() {
 					}
 				}
 
-				downloadLink, err = a.GetDownloadLink(included_parts.Value(), excluded_parts.Value())
+				downloadLink, err = a.GetDownloadLink(includedParts, excludedParts)
 				if err != nil {
 					return err
 				}
@@ -134,28 +136,28 @@ func main() {
 					}
 				}
 
-				downloadLink, err = a.GetDownloadLink(included_parts.Value(), excluded_parts.Value())
+				downloadLink, err = a.GetDownloadLink(includedParts, excludedParts)
 				if err != nil {
 					return err
 				}
 			}
 
 			// 不进行下载文件的情况
-			if no_download {
+			if noDownload {
 				fmt.Print(downloadLink)
 				return nil
 			}
 
 			// 进行下载文件的情况
 			if downloadLink != "" {
-				_, err = gToolbox.CheckToolbox([]string{"curl"})
+				_, err = xToolbox.CheckToolbox([]string{"curl"})
 				if err != nil {
-					err := gDownloader.Download(downloadLink, output, "")
+					err = xDownloader.Download(downloadLink, output, "")
 					if err != nil {
 						return err
 					}
 				} else {
-					err := gDownloader.DownloadWithCurl(downloadLink, output, "")
+					err = xDownloader.DownloadWithCurl(downloadLink, output, "")
 					if err != nil {
 						return err
 					}
@@ -165,7 +167,7 @@ func main() {
 		},
 	}
 
-	err := app.Run(os.Args)
+	err := cmd.Run(context.Background(), os.Args)
 	if err != nil {
 		log.Fatal(err)
 	}

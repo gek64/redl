@@ -2,7 +2,8 @@ package internal
 
 import (
 	"fmt"
-	"github.com/gek64/gek/gRelease/github"
+
+	"github.com/unix755/xtools/xRelease/github"
 )
 
 type GithubAPI struct {

@@ -2,7 +2,8 @@ package internal
 
 import (
 	"fmt"
-	"github.com/gek64/gek/gRelease/sourceForge"
+
+	"github.com/unix755/xtools/xRelease/sourceForge"
 )
 
 type SourceForgeAPI struct {

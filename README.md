@@ -53,11 +53,11 @@ for /f "tokens=*" %%i in ('redl -gl 36189 -p .asc -nd') do (aria2c -x 4 %%i)
 
 ```sh
 # system is linux(debian,redhat linux,ubuntu,fedora...) and arch is amd64
-curl -Lo /usr/local/bin/redl https://github.com/gek64/redl/releases/latest/download/redl-linux-amd64
+curl -Lo /usr/local/bin/redl https://github.com/unix755/redl/releases/latest/download/redl-linux-amd64
 chmod +x /usr/local/bin/redl
 
 # system is freebsd and arch is amd64
-curl -Lo /usr/local/bin/redl https://github.com/gek64/redl/releases/latest/download/redl-freebsd-amd64
+curl -Lo /usr/local/bin/redl https://github.com/unix755/redl/releases/latest/download/redl-freebsd-amd64
 chmod +x /usr/local/bin/redl
 ```
 
@@ -66,7 +66,7 @@ chmod +x /usr/local/bin/redl
 ### How to compile if prebuilt binaries are not found
 
 ```sh
-git clone https://github.com/gek64/redl.git
+git clone https://github.com/unix755/redl.git
 cd redl
 export CGO_ENABLED=0
 go build -v -trimpath -ldflags "-s -w"
